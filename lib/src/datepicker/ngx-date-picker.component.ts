@@ -1,8 +1,19 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { CalendarType, GlobalConfig, SelectModes, 
-         weekDays, months, IDate, DaysViewInMonth, ISelectedDate, IDayView, DatepickerEvents } from '../config/datePicker-config';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {
+  CalendarType,
+  DatepickerEvents,
+  DaysViewInMonth,
+  GlobalConfig,
+  IDate,
+  IDayView,
+  ISelectedDate,
+  months,
+  SelectModes,
+  weekDays
+} from '../config/datePicker-config';
 import Calendar from '../helpers/calendar';
 import DateInfo from '../helpers/dateInfo';
+import {toGregorian} from "jalaali-js";
 
 @Component({
   selector: 'ngx-date-picker',
@@ -21,7 +32,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
   @Output("onEvents") onEvents = new EventEmitter<DatepickerEvents>()
 
   selectMode: SelectModes = "days";
-  calendarType: CalendarType = "gregorian";
+  calendarType: CalendarType = "jalali";
   displayFooter: boolean = true;
 
   months!: string[];
@@ -49,7 +60,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
     this.weekDays = weekDays[this.calendarType]
 
     this.calandarConfig.setCalendar(this.calendarType);
-    this.currentDate = this.getCurrentDate();    
+    this.currentDate = this.getCurrentDate();
     this.selectedDate = {...this.currentDate, day: null}
     this.viewDate = {
       year: this.selectedDate.year,
@@ -57,8 +68,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
     }
 
     const { month, year } = this.currentDate;
-    const selectedMonthDays = this.calandarConfig.getChunkedDaysInSelectedMonth(month!, year);
-    this.selectedMonthDays = selectedMonthDays;     
+    this.selectedMonthDays = this.calandarConfig.getChunkedDaysInSelectedMonth(month!, year);
   }
 
   getCurrentDate(): IDate{
@@ -77,7 +87,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
         }
         break;
 
-      case "days":        
+      case "days":
         if(action == "next"){
             if(this.viewDate.month == this.months.length-1){
               this.viewDate.year += 1
@@ -94,24 +104,25 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
             }
         }
 
-        this.selectedMonthDays = 
+        this.selectedMonthDays =
         this.calandarConfig.getChunkedDaysInSelectedMonth(this.viewDate.month!, this.viewDate.year)
         break;
 
-      case "months":        
+      case "months":
         if(action == "next"){
             this.viewDate.year += 1
         } else if (action == "back"){
           this.viewDate.year -= 1
         }
         break;
-    
+
       default:
         break;
     }
   }
 
   setValueForSelectView(viewMode: SelectModes, value: number, dayInfo?: IDayView){
+    console.log(dayInfo)
     switch (viewMode) {
       case "years":
         {
@@ -120,7 +131,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
             this.selectedDate.month = null
           }
 
-          this.viewDate.year = value             
+          this.viewDate.year = value
           this.selectMode = "months"
         }
         break;
@@ -135,7 +146,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
           this.viewDate.month = value
           this.selectMode = "days"
 
-          this.selectedMonthDays = 
+          this.selectedMonthDays =
           this.calandarConfig.getChunkedDaysInSelectedMonth(this.viewDate.month!, this.viewDate.year)
         }
         break;
@@ -151,7 +162,7 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
           if(!this.displayFooter) this.done()
         }
         break;
-    
+
       default:
         break;
     }
@@ -159,6 +170,31 @@ export class NgxDatePickerComponent implements OnInit, OnDestroy {
 
   closeDatePicker(){
     this.onEvents.emit("closeDatepicker")
+  }
+
+  goToday(){
+    const { month, year, day } = this.getCurrentDate();
+    let dayCounter = day
+    let isToday: boolean = true;
+
+    let [gYear, gMonth, gDay] = [year, month, dayCounter]
+    let monthIndex: number = month;
+
+    if("jalali"){
+      const {gy, gm, gd} = toGregorian(year, month, dayCounter);
+      [gYear, gMonth, gDay] = [gy, gm, gd]
+    }
+
+    const currentDate = new Date(gYear, gMonth, gDay)
+    let currentDayWeek = this.calandarConfig.getDayIndexOfWeek(currentDate.getDay())
+
+
+    const today: IDayView = {
+      date: currentDate, type: this.calendarType,
+      year, month: monthIndex, day: dayCounter, disabled: false,
+      weekDay: currentDayWeek, isToday, isSelected: true
+    }
+    this.setValueForSelectView('days', today.day, today)
   }
 
   done(){

@@ -1,6 +1,6 @@
-<div cl>
+<div>
   <h4 class="text_title">
-    This is an input element with 
+    This is an input element with
     <span class="text_primary">
       {{isDefaultConfig ? "default" : "your custom"}}
     </span>
@@ -8,7 +8,7 @@
   </h4>
 
   <div class="mt2">
-    <input type="text" readonly ngx-date-picker [formControl]="dateControl"
+    <input autofocus type="text" readonly ngx-date-picker [formControl]="dateControl"
     [datePickerConfig]="customConfig">
   </div>
 
@@ -58,7 +58,7 @@
 
     <div class="input_group flex items_center">
       <label class="input_label mr2">
-        Display Actions Footer: 
+        Display Actions Footer:
       </label>
       <div class="input_item">
         <input type="checkbox" class="my_switch" formControlName="displayFooter" id="displayFooter">
@@ -68,7 +68,7 @@
 
     <div class="input_group flex items_center">
       <label class="input_label mr2" for="doneText">
-        Done Action Text: 
+        Done Action Text:
       </label>
       <div class="input_item">
         <input type="text" formControlName="doneText" id="doneText">
@@ -77,7 +77,7 @@
 
     <div class="input_group flex items_center">
       <label class="input_label mr2" for="cancelText">
-        Cancel Action Text: 
+        Cancel Action Text:
       </label>
       <div class="input_item">
         <input type="text" formControlName="cancelText" id="cancelText">
@@ -116,7 +116,7 @@
               <input type="color" formControlName="primaryColor">
             </div>
           </div>
-  
+
           <div class="input_group flex items_center mr2">
             <label class="input_label mr">
               Secondary Color:
@@ -125,7 +125,7 @@
               <input type="color" formControlName="secondaryColor">
             </div>
           </div>
-  
+
           <div class="input_group flex items_center">
             <label class="input_label mr">
               Background Color:
@@ -149,7 +149,7 @@
               <input type="color" formControlName="primaryColor">
             </div>
           </div>
-  
+
           <div class="input_group flex items_center mr2">
             <label class="input_label mr">
               Secondary Color:
@@ -158,7 +158,7 @@
               <input type="color" formControlName="secondaryColor">
             </div>
           </div>
-  
+
           <div class="input_group flex items_center">
             <label class="input_label mr">
               Background Color:

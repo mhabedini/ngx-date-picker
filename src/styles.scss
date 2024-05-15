@@ -23,3 +23,15 @@ body, .ngx_date_picker *{
 .hljs{
     border-radius: 0.5rem;
 }
+
+.ngx_date_picker .date_picker_body .calendar_table  .calendar_table_body .calendar_table_row .calendar_cell:nth-child(7) {
+  button span {
+    color: red;
+  }
+}
+
+.ngx_date_picker .date_picker_body .calendar_table  .calendar_table_body .calendar_table_row .selected:nth-child(7) {
+  button span {
+    color: white;
+  }
+}

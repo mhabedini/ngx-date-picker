@@ -1,35 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { CustomConfig } from 'dist/ah99/ngx-date-picker/config/datePicker-config';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {CustomConfig} from 'dist/ah99/ngx-date-picker/config/datePicker-config';
 
 const defaultConfig = {
-  calendar: "gregorian",
+  calendar: "jalali",
   format: "DD/MM/YYYY",
   outputData: {
-      date: true,
-      type: false,
-      year: false,
-      month: false,
-      day: false
+    date: true,
+    type: false,
+    year: false,
+    month: false,
+    day: false
   },
   themeConfig: {
-      light: {
-          primaryColor: "#777777",
-          secondaryColor: "#444444",
-          backgroudColor: "#ffffff"
-      },
-      dark: {
-          primaryColor: "#ffffff",
-          secondaryColor: "#eeeeee",
-          backgroudColor: "#444444"
-      },
-      rounded: "medium"
+    light: {
+      primaryColor: "#2d72d2",
+      secondaryColor: "#e8effa",
+      backgroudColor: "#ffffff"
+    },
+    dark: {
+      primaryColor: "#ffffff",
+      secondaryColor: "#eeeeee",
+      backgroudColor: "#444444"
+    },
+    rounded: "medium"
   },
   displayFooter: true,
-  doneText: "Done",
-  cancelText: "Cancel",
+  doneText: "باشه",
+  cancelText: "لغو",
   theme: "light"
 }
+
 @Component({
   selector: 'app-demo',
   templateUrl: './demo.component.html',
@@ -71,28 +72,28 @@ export class DemoComponent implements OnInit {
   })
 
   selects = {
-    calendar: ["gregorian", "jalali"],
+    calendar: ["jalali", "gregorian"],
     theme: ["light", "dark"],
-    format: ["MM/DD/YYYY", "DD/MM/YYYY", "MM-DD-YYYY", "DD-MM-YYYY"],
+    format: ["MM/DD/YYYY", "YYYY/MM/DD", "YYYY-MM-DD", "DD-MM-YYYY"],
     rounded: [false, "medium", "full"]
   }
 
   dateControl = new FormControl('');
   customDateControl = new FormControl('');
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.configForm.valueChanges.subscribe(value => {
       this.isDefaultConfig = false
       this.customConfig = value
       this.dateControl.setValue("")
     })
   }
-  
-  select(e: any){
+
+  select(e: any) {
     console.log(e)
   }
 
-  resetToDefault(){
+  resetToDefault() {
     this.configForm.setValue(defaultConfig)
     this.isDefaultConfig = true
   }

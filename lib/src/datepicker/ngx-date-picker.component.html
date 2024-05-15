@@ -1,151 +1,154 @@
 <div class="ngx_date_picker"
-[ngClass]="{'ngx_date_picker_jalali': calendarType == 'jalali'}"
-[dir]=" calendarType == 'jalali' ? 'rtl' : 'ltr' ">
-    <!-- date picker Header (year and month buttons + navigations) -->
-    <ng-container [ngTemplateOutlet]="datePicker_header"></ng-container>
+     [ngClass]="{'ngx_date_picker_jalali': calendarType == 'jalali'}"
+     [dir]=" calendarType == 'jalali' ? 'rtl' : 'ltr' ">
+  <!-- date picker Header (year and month buttons + navigations) -->
+  <ng-container [ngTemplateOutlet]="datePicker_header"></ng-container>
 
-    <!-- date picker body (select views) -->
-    <ng-container [ngTemplateOutlet]="datePicker_body"></ng-container>
+  <!-- date picker body (select views) -->
+  <ng-container [ngTemplateOutlet]="datePicker_body"></ng-container>
 
-    <!-- date picker footer (date picker actions) -->
-    <ng-container *ngIf="displayFooter" [ngTemplateOutlet]="datePicker_footer"></ng-container>
+  <!-- date picker footer (date picker actions) -->
+  <ng-container *ngIf="displayFooter" [ngTemplateOutlet]="datePicker_footer"></ng-container>
 </div>
 
 <ng-template #datePicker_body>
-    <div class="date_picker_body">
-         <!-- days view -->
-         <ng-container *ngIf="selectMode == 'days'" [ngTemplateOutlet]="daysView"></ng-container>
+  <div class="date_picker_body">
+    <!-- days view -->
+    <ng-container *ngIf="selectMode == 'days'" [ngTemplateOutlet]="daysView"></ng-container>
 
-         <!-- months view -->
-         <ng-container *ngIf="selectMode == 'months'" [ngTemplateOutlet]="monthsView"></ng-container>
-         
-         <!-- years view -->
-         <ng-container *ngIf="selectMode == 'years'" [ngTemplateOutlet]="yearsView"></ng-container>
-         
-    </div>
+    <!-- months view -->
+    <ng-container *ngIf="selectMode == 'months'" [ngTemplateOutlet]="monthsView"></ng-container>
+
+    <!-- years view -->
+    <ng-container *ngIf="selectMode == 'years'" [ngTemplateOutlet]="yearsView"></ng-container>
+
+  </div>
 </ng-template>
 
 <ng-template #datePicker_header>
-    <div class="date_picker_header">
-        <button class="nav_btn back_btn" title="back"
-        [ngClass]="{'rotate_it': calendarType == 'jalali'}"
-        (click)="navigate('back')">
-            <span class="nav_icon back_icon"></span>
-        </button>
+  <div class="date_picker_header">
+    <button class="nav_btn back_btn" title="back"
+            [ngClass]="{'rotate_it': calendarType == 'jalali'}"
+            (click)="navigate('back')">
+      <span class="nav_icon back_icon"></span>
+    </button>
 
-        <div class="view_mode_select">
-            <ng-container *ngIf="selectMode != 'years'">
-                <button *ngIf="selectMode == 'days'"
+    <div class="view_mode_select">
+      <ng-container *ngIf="selectMode != 'years'">
+        <button *ngIf="selectMode == 'days'"
                 class="month_select" (click)="selectMode = 'months' ">
                     <span>
                         {{months[viewDate.month!]}}
                     </span>
-                </button>
-                <button
-                class="year_select" (click)="selectMode = 'years' ">
+        </button>
+        <button
+          class="year_select" (click)="selectMode = 'years' ">
                     <span>
                         {{viewDate.year}}
                     </span>
-                </button>
-            </ng-container>
-            <span *ngIf="selectMode == 'years'">
-                {{
-                    (currentDate.year - (10 + yearsStep*20))
-                    + " - " +
-                    ((currentDate.year - (10 + yearsStep*20)) + 19)
-                }}
-            </span>
-        </div>
-
-        <button class="nav_btn next_btn" title="next"
-        [ngClass]="{'rotate_it': calendarType == 'jalali'}"
-        (click)="navigate('next')">
-            <span class="nav_icon next_icon"></span>
         </button>
+      </ng-container>
+      <span *ngIf="selectMode == 'years'">
+                {{
+        (currentDate.year - (10 + yearsStep * 20))
+        + " - " +
+        ((currentDate.year - (10 + yearsStep * 20)) + 19)
+        }}
+            </span>
     </div>
+
+    <button class="nav_btn next_btn" title="next"
+            [ngClass]="{'rotate_it': calendarType == 'jalali'}"
+            (click)="navigate('next')">
+      <span class="nav_icon next_icon"></span>
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #datePicker_footer>
-    <div class="date_picker_footer">
-        <button class="footer_btn cancel_btn" (click)="closeDatePicker()">
-            {{config.cancelText}}
-        </button>
-        <button class="footer_btn done_btn" (click)="done()">
-            {{config.doneText}}
-        </button>
-    </div>
+  <button class="footer_btn go_today_btn" (click)="goToday()">
+    {{config.goToday}}
+  </button>
+  <div class="date_picker_footer">
+    <button class="footer_btn cancel_btn" (click)="closeDatePicker()">
+      {{config.cancelText}}
+    </button>
+    <button class="footer_btn done_btn" (click)="done()">
+      {{config.doneText}}
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #daysView>
-    <div  class="calendar_table days_view">
-        <div class="calendar_table_header calendar_table_row">
+  <div class="calendar_table days_view">
+    <div class="calendar_table_header calendar_table_row">
             <span *ngFor="let day of weekDays">
                 {{day}}
             </span>
-        </div>
+    </div>
 
-        <div class="calendar_table_body">
-            <div *ngFor="let week of selectedMonthDays; let i = index"
-            class="calendar_table_row">
+    <div class="calendar_table_body">
+      <div *ngFor="let week of selectedMonthDays; let i = index"
+           class="calendar_table_row">
                 <span *ngFor="let day of week; let j = index"
-                class="calendar_cell"
-                [ngClass]="{
+                      class="calendar_cell"
+                      [ngClass]="{
                     'disabled': day.disabled,
                     'today': day.isToday,
-                    'selected': 
-                    selectedDate.year == day.year && 
-                    selectedDate.month == day.month && 
+                    'selected':
+                    selectedDate.year == day.year &&
+                    selectedDate.month == day.month &&
                     selectedDate.day == day.day
                 }">
                     <button class="calendar_day_btn"
-                    (click)=" day.disabled ? null : setValueForSelectView('days', day.day, day) ">
+                            (click)=" day.disabled ? null : setValueForSelectView('days', day.day, day) ">
                         <span>
                             {{day.day}}
                         </span>
                     </button>
                 </span>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <ng-template #monthsView>
-    <div class="calendar_table months_view">
-        <div class="calendar_table_body">
-            <div *ngFor="let row of [].constructor(4); let i = index"
-            class="calendar_table_row">
-                <ng-container *ngFor="let col of [].constructor(3); let j = index" 
-                [ngTemplateOutlet]="monthCell" 
-                [ngTemplateOutletContext]="{month: (((i*4) - i) + j)}"></ng-container>
-            </div>
-        </div>
+  <div class="calendar_table months_view">
+    <div class="calendar_table_body">
+      <div *ngFor="let row of [].constructor(4); let i = index"
+           class="calendar_table_row">
+        <ng-container *ngFor="let col of [].constructor(3); let j = index"
+                      [ngTemplateOutlet]="monthCell"
+                      [ngTemplateOutletContext]="{month: (((i*4) - i) + j)}"></ng-container>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <ng-template #yearsView>
-    <div class="calendar_table years_view">
-        <div>
-            <div class="calendar_table_body">
-                <div class="calendar_table_row"
-                *ngFor="let row of [].constructor(5); let i = index">
-                    <ng-container *ngFor="let col of [].constructor(4); let j = index" 
-                    [ngTemplateOutlet]="yearCell" 
-                    [ngTemplateOutletContext]="{year: currentDate.year + ((i*20/4) - i) + j - (10 + (20*yearsStep))}"></ng-container>
-                </div>
-            </div>
+  <div class="calendar_table years_view">
+    <div>
+      <div class="calendar_table_body">
+        <div class="calendar_table_row"
+             *ngFor="let row of [].constructor(5); let i = index">
+          <ng-container *ngFor="let col of [].constructor(4); let j = index"
+                        [ngTemplateOutlet]="yearCell"
+                        [ngTemplateOutletContext]="{year: currentDate.year + ((i*20/4) - i) + j - (10 + (20*yearsStep))}"></ng-container>
         </div>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <ng-template #monthCell let-month="month">
     <span class="calendar_cell"
-    [ngClass]="{
+          [ngClass]="{
         'today': currentDate.year == viewDate.year &&  month == currentDate.month,
         'selected': selectedDate.year == viewDate.year && month == selectedDate.month
     }"
-    [ngStyle]="{'width': 'calc(' + 100 / 3 + '%)'}">
+          [ngStyle]="{'width': 'calc(' + 100 / 3 + '%)'}">
         <button class="calendar_day_btn"
-        (click)="setValueForSelectView('months', month )">
+                (click)="setValueForSelectView('months', month )">
             <span>
                 {{ months[month] }}
             </span>
@@ -155,13 +158,13 @@
 
 <ng-template #yearCell let-year="year">
     <span class="calendar_cell"
-    [ngClass]="{
+          [ngClass]="{
         'today': year == currentDate.year,
         'selected': year == selectedDate.year
          }"
-     >
+    >
         <button class="calendar_day_btn"
-        (click)="setValueForSelectView('years', year)">
+                (click)="setValueForSelectView('years', year)">
             <span>
                 {{ year }}
             </span>

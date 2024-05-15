@@ -70,8 +70,8 @@ input[type="color"] {
             content: "";
             position: absolute;
             display: block;
-            left: 0px;
-            top: 0px;
+            left: 0;
+            top: 0;
             width: 24px; /* x*3 */
             height: 24px; /* x*3 */
             border-radius: 16px; /* x*2 */
@@ -115,7 +115,6 @@ input[type="color"] {
         height: 26px;
         line-height: 26px;
         margin: 0;
-        padding: 0;
         text-align: center;
         transition: .2s all ease-in-out;
         padding: 0 1rem;
@@ -132,3 +131,5 @@ input[type="color"] {
         }
     }
 }
+
+
